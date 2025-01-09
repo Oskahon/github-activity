@@ -8,7 +8,15 @@ async function main() {
     // Get the activity as an object
     const activity = await getActivity('Oskahon');
 
-    console.log(activity);
+    // Log the first event
+    // console.log(activity[0]);
+
+    for (const event of activity) {
+        console.log(`Date: ${event.created_at}`);
+        console.log(`Repo: ${event.repo.name}`);
+        console.log(`Event type: ${event.type}`);
+        console.log();
+    }
 
 }
 
