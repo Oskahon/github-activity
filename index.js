@@ -2,20 +2,36 @@
 
 
 async function main() {
+    const username = 'Oskahon';
     // Get username from command line argument
     console.log('github-activity');
 
     // Get the activity as an object
-    const activity = await getActivity('Oskahon');
+    const activity = await getActivity(username);
 
     // Log the first event
-    // console.log(activity[0]);
+    // console.log(activity[2].payload);
+
+    const events = [];
+    const eventObject = {};
 
     for (const event of activity) {
-        console.log(`Date: ${event.created_at}`);
-        console.log(`Repo: ${event.repo.name}`);
-        console.log(`Event type: ${event.type}`);
-        console.log();
+        eventObject.name = event.repo.name;
+        eventObject.type = event.type;
+
+        if (event.type === 'PushEvent') {
+            eventObject.commits = event.payload.size;
+        }
+
+        events.push({ ...eventObject });
+        // console.log(`Date: ${event.created_at}`);
+        // console.log(`Repo: ${event.repo.name}`);
+        // console.log(`Event type: ${event.type}`);
+        // console.log();
+    }
+
+    for (const event of events) {
+        console.log(event);
     }
 
 }
