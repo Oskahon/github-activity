@@ -10,11 +10,12 @@ async function main() {
     const activity = await getActivity(username);
 
     // Log the first event
-    // console.log(activity[2].payload);
+    // console.log(activity[19]);
 
     const events = [];
     const eventObject = {};
 
+    // Create eventObject from event
     for (const event of activity) {
         eventObject.name = event.repo.name;
         eventObject.type = event.type;
@@ -22,16 +23,34 @@ async function main() {
         if (event.type === 'PushEvent') {
             eventObject.commits = event.payload.size;
         }
+        if (event.type === 'CreateEvent') {
+            eventObject.createType = event.payload.ref_type;
+            eventObject.branch = event.payload.ref;
+        }
 
         events.push({ ...eventObject });
-        // console.log(`Date: ${event.created_at}`);
-        // console.log(`Repo: ${event.repo.name}`);
-        // console.log(`Event type: ${event.type}`);
-        // console.log();
     }
 
+    // Print event details
+    // TODO Check if there is a list of event types for the github api
     for (const event of events) {
-        console.log(event);
+        if (event.type === 'PushEvent') {
+            console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
+        } else if (event.type === 'PublicEvent') {
+            console.log(`Made ${event.name} public`);
+        } else if (event.type === 'CreateEvent') {
+            if (event.createType === 'repository') {
+                console.log(`Created ${event.name}`);
+            } else if (event.createType === 'branch') {
+                console.log(`Created a new branch '${event.branch}' at ${event.name}`);
+            } else {
+                console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
+            }
+        } else if (event.type === 'ForkEvent') {
+            console.log(`Forked ${event.name}`);
+        } else {
+            console.log(event);
+        }
     }
 
 }
