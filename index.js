@@ -2,12 +2,24 @@
 
 
 async function main() {
-    const username = 'Oskahon';
+    if (process.argv.length < 3) {
+        console.error('Too few arguments.');
+        return;
+    }
+
     // Get username from command line argument
-    console.log('github-activity');
+    const username = process.argv[2];
 
     // Get the activity as an object
-    const activity = await getActivity(username);
+    let activity;
+    try {
+        activity = await getActivity(username);
+    } catch (error) {
+        console.error(error.message);
+        return;
+    }
+
+    console.log(`Activity for ${username}:`);
 
     // Log the first event
     // console.log(activity[19]);
@@ -16,6 +28,7 @@ async function main() {
     const eventObject = {};
 
     // Create eventObject from event
+    // TODO List events by month and year
     for (const event of activity) {
         eventObject.name = event.repo.name;
         eventObject.type = event.type;
@@ -62,6 +75,9 @@ async function getActivity(username) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
+            if (response.status === 404) {
+                throw new Error('Username not found');
+            }
             throw new Error(`Response status ${response.status}`);
         }
 
@@ -69,7 +85,7 @@ async function getActivity(username) {
         const json = await response.json();
         return json;
     } catch (error) {
-        console.error(error.message);
+        throw error;
     }
 
 }
