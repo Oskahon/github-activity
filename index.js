@@ -25,21 +25,10 @@ async function main() {
     // console.log(activity[19]);
 
     const events = [];
-    const eventObject = {};
-
     // Create eventObject from event
     // TODO List events by month and year
     for (const event of activity) {
-        eventObject.name = event.repo.name;
-        eventObject.type = event.type;
-
-        if (event.type === 'PushEvent') {
-            eventObject.commits = event.payload.size;
-        }
-        if (event.type === 'CreateEvent') {
-            eventObject.createType = event.payload.ref_type;
-            eventObject.branch = event.payload.ref;
-        }
+        const eventObject = createEventObject(event);
 
         events.push({ ...eventObject });
     }
@@ -87,7 +76,23 @@ async function getActivity(username) {
     } catch (error) {
         throw error;
     }
+}
 
+function createEventObject(event) {
+    const eventObject = {};
+
+    eventObject.name = event.repo.name;
+    eventObject.type = event.type;
+
+    if (event.type === 'PushEvent') {
+        eventObject.commits = event.payload.size;
+    }
+    if (event.type === 'CreateEvent') {
+        eventObject.createType = event.payload.ref_type;
+        eventObject.branch = event.payload.ref;
+    }
+
+    return eventObject;
 }
 
 main();
