@@ -22,10 +22,11 @@ async function main() {
         return;
     }
 
+    console.log();
     console.log(`Activity for ${username}:`);
 
     // Log the first event
-    // console.log(activity[19]);
+    // console.log(activity[1]);
 
     // Handles the parsing and printing of the activity data
     handleEvents(activity);

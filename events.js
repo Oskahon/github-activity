@@ -45,29 +45,46 @@ function createEventObject(event) {
 // ? Check if there is a list of event types for the github api
 function printEvent(event) {
     if (event.type === 'PushEvent') {
-        console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
+        console.log(`\tPushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
     } else if (event.type === 'PublicEvent') {
-        console.log(`Made ${event.name} public`);
+        console.log(`\tMade ${event.name} public`);
     } else if (event.type === 'CreateEvent') {
         if (event.createType === 'repository') {
-            console.log(`Created ${event.name}`);
+            console.log(`\tCreated ${event.name}`);
         } else if (event.createType === 'branch') {
-            console.log(`Created a new branch '${event.branch}' at ${event.name}`);
+            console.log(`\tCreated a new branch '${event.branch}' at ${event.name}`);
         } else {
-            console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
+            console.log(`\tCreateEvent, payload.ref_type: ${event.createType}`);
         }
     } else if (event.type === 'ForkEvent') {
-        console.log(`Forked ${event.name}`);
+        console.log(`\tForked ${event.name}`);
     } else {
-        console.log(event);
+        console.log(`\t${event}`);
     }
+}
+
+function parseMonth(event) {
+    const date = new Date(event.created_at);
+    const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+
+    return monthName;
 }
 
 // Creates objects and prints their content from activity data
 // Activity data is fetched with the getActivity function
 function handleEvents(activity) {
-    // TODO List events by month and year
+    let month = "";
+
     for (const event of activity) {
+        // Get the month an print it if it's a new one
+        const eventMonth = parseMonth(event);
+        if (month !== eventMonth) {
+            month = eventMonth;
+
+            console.log();
+            console.log(`In ${month}: `);
+        }
+
         // Create eventObject
         const eventObject = createEventObject(event);
 
@@ -75,6 +92,7 @@ function handleEvents(activity) {
         printEvent(eventObject);
     }
 
+    console.log();
 }
 
 module.exports = {
@@ -82,4 +100,4 @@ module.exports = {
     createEventObject,
     printEvent,
     handleEvents
-};
+};;
