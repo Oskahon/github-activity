@@ -1,5 +1,7 @@
 // CLI tool for getting public github activity data of a given user
 
+// TODO Move functions to another module so they can be reused in other parth of the project
+
 async function main() {
     if (process.argv.length < 3) {
         console.error('Too few arguments.');
@@ -24,36 +26,18 @@ async function main() {
     // console.log(activity[19]);
 
     const events = [];
+
     // Create eventObject from event
     // TODO List events by month and year
+    // ? Should I combine this so that I handle the events one by one instead of making a list?
     for (const event of activity) {
         const eventObject = createEventObject(event);
 
         events.push({ ...eventObject });
     }
 
-    // Print event details
-    // TODO Check if there is a list of event types for the github api
-    for (const event of events) {
-        if (event.type === 'PushEvent') {
-            console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
-        } else if (event.type === 'PublicEvent') {
-            console.log(`Made ${event.name} public`);
-        } else if (event.type === 'CreateEvent') {
-            if (event.createType === 'repository') {
-                console.log(`Created ${event.name}`);
-            } else if (event.createType === 'branch') {
-                console.log(`Created a new branch '${event.branch}' at ${event.name}`);
-            } else {
-                console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
-            }
-        } else if (event.type === 'ForkEvent') {
-            console.log(`Forked ${event.name}`);
-        } else {
-            console.log(event);
-        }
-    }
-
+    // Log events into terminal
+    printEvents(events);
 }
 
 async function getActivity(username) {
@@ -77,6 +61,7 @@ async function getActivity(username) {
     }
 }
 
+// Create EventObjects from the fetched data
 function createEventObject(event) {
     const eventObject = {};
 
@@ -92,6 +77,30 @@ function createEventObject(event) {
     }
 
     return eventObject;
+}
+
+// Print event details
+// ? Check if there is a list of event types for the github api
+function printEvents(events) {
+    for (const event of events) {
+        if (event.type === 'PushEvent') {
+            console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
+        } else if (event.type === 'PublicEvent') {
+            console.log(`Made ${event.name} public`);
+        } else if (event.type === 'CreateEvent') {
+            if (event.createType === 'repository') {
+                console.log(`Created ${event.name}`);
+            } else if (event.createType === 'branch') {
+                console.log(`Created a new branch '${event.branch}' at ${event.name}`);
+            } else {
+                console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
+            }
+        } else if (event.type === 'ForkEvent') {
+            console.log(`Forked ${event.name}`);
+        } else {
+            console.log(event);
+        }
+    }
 }
 
 main();
