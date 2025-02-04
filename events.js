@@ -1,7 +1,11 @@
 // Module containing the functionality to fetch, parse and print github event activity
 //@ts-check
 
-// Fetch github activity
+/**
+ * Fetch github activity based on the given username for the last 3 months
+ * @param {String} username The username of the profile to be fetched
+ * @returns {Promise<Array>} Returns a promise that resolves into an array containing objects with event data
+ */
 async function getActivity(username) {
     // Fetch from https://api.github.com/users/<username>/events
     const url = `https://api.github.com/users/${username}/events`;
@@ -24,7 +28,11 @@ async function getActivity(username) {
 }
 
 // TODO Create event class and use it to parse needed data into an object
-// Create EventObjects from the fetched data
+/**
+ * Create EventObjects from the fetched data
+ * @param {Object} event The event object containing all the data fetched from GitHub
+ * @returns {Object} Returns an object containing only the relevant data
+ */
 function createEventObject(event) {
     const eventObject = {};
 
@@ -42,8 +50,11 @@ function createEventObject(event) {
     return eventObject;
 }
 
-// Print event details
 // ? Check if there is a list of event types for the github api
+/**
+ * Log event information into console
+ * @param {Object} event Contains all the relevant event data
+ */
 function printEvent(event) {
     if (event.type === 'PushEvent') {
         console.log(`\tPushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
@@ -64,7 +75,11 @@ function printEvent(event) {
     }
 }
 
-// Get the month the from the event timestamp
+/**
+ * Get the month the from the event timestamp
+ * @param {Object} event Contains all the data for an event fetched from GitHub
+ * @returns {String} Returns the month when the event happened as a string
+ */
 function parseMonth(event) {
     const date = new Date(event.created_at);
     const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
@@ -72,8 +87,11 @@ function parseMonth(event) {
     return monthName;
 }
 
-// Creates objects and prints their content from activity data
-// Activity data is fetched with the getActivity function
+/**
+ * Creates objects and prints their content from activity data
+ * Activity data is fetched with the getActivity function
+ * @param {Array.<Object>} activity Array containing the event objects fetched from GitHub
+ */
 function handleEvents(activity) {
     let month = "";
 
