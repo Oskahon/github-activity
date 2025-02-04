@@ -1,5 +1,4 @@
-// @ts-check
-
+// CLI tool for getting public github activity data of a given user
 
 async function main() {
     if (process.argv.length < 3) {
