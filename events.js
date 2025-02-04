@@ -4,7 +4,7 @@
 /**
  * Fetch github activity based on the given username for the last 3 months
  * @param {String} username The username of the profile to be fetched
- * @returns {Promise<Array>} Returns a promise that resolves into an array containing objects with event data
+ * @returns {Promise<Array>} Promise that resolves into an array containing objects with event data
  */
 async function getActivity(username) {
     // Fetch from https://api.github.com/users/<username>/events
@@ -31,7 +31,7 @@ async function getActivity(username) {
 /**
  * Create EventObjects from the fetched data
  * @param {Object} event The event object containing all the data fetched from GitHub
- * @returns {Object} Returns an object containing only the relevant data
+ * @returns {Object} Object containing only the relevant data
  */
 function createEventObject(event) {
     const eventObject = {};
@@ -78,7 +78,7 @@ function printEvent(event) {
 /**
  * Get the month the from the event timestamp
  * @param {Object} event Contains all the data for an event fetched from GitHub
- * @returns {String} Returns the month when the event happened as a string
+ * @returns {String} The month when the event happened as a string
  */
 function parseMonth(event) {
     const date = new Date(event.created_at);
@@ -109,10 +109,47 @@ function handleEvents(activity) {
         const eventObject = createEventObject(event);
 
         // Print the event
-        printEvent(eventObject);
+        console.log(parseEventToString(eventObject));
     }
 
     console.log();
+}
+
+/**
+ * Parse event data into string
+ * ? Check if there is a list of event types for the github api
+ * @param {Object} event Contains all the relevant event data
+ * @returns {String} Event data in a string format
+ */
+function parseEventToString(event) {
+    let eventString = '\t';
+
+    switch (event.type) {
+        case 'PushEvent':
+            eventString += `Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`;
+            break;
+        case 'PublicEvent':
+            eventString += `Made ${event.name} public`;
+            break;
+        case 'CreateEvent':
+            if (event.createType === 'repository') {
+                eventString += `Created ${event.name}`;
+            } else if (event.createType === 'branch') {
+                eventString += `Created a new branch '${event.branch}' at ${event.name}`;
+            } else {
+                eventString += `CreateEvent, payload.ref_type: ${event.createType}`;
+            }
+            break;
+        case 'ForkEvent':
+            eventString += `Forked ${event.name}`;
+            break;
+
+        default:
+            eventString += `${event}`;
+            break;
+    }
+
+    return eventString;
 }
 
 module.exports = {
@@ -121,4 +158,5 @@ module.exports = {
     printEvent,
     parseMonth,
     handleEvents,
-};;
+    parseEventToString
+};
