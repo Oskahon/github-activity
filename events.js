@@ -43,47 +43,43 @@ function createEventObject(event) {
 
 // Print event details
 // ? Check if there is a list of event types for the github api
-function printEvents(events) {
-    for (const event of events) {
-        if (event.type === 'PushEvent') {
-            console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
-        } else if (event.type === 'PublicEvent') {
-            console.log(`Made ${event.name} public`);
-        } else if (event.type === 'CreateEvent') {
-            if (event.createType === 'repository') {
-                console.log(`Created ${event.name}`);
-            } else if (event.createType === 'branch') {
-                console.log(`Created a new branch '${event.branch}' at ${event.name}`);
-            } else {
-                console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
-            }
-        } else if (event.type === 'ForkEvent') {
-            console.log(`Forked ${event.name}`);
+function printEvent(event) {
+    if (event.type === 'PushEvent') {
+        console.log(`Pushed ${event.commits} ${event.commits > 1 ? 'commits' : 'commit'} to ${event.name}`);
+    } else if (event.type === 'PublicEvent') {
+        console.log(`Made ${event.name} public`);
+    } else if (event.type === 'CreateEvent') {
+        if (event.createType === 'repository') {
+            console.log(`Created ${event.name}`);
+        } else if (event.createType === 'branch') {
+            console.log(`Created a new branch '${event.branch}' at ${event.name}`);
         } else {
-            console.log(event);
+            console.log(`CreateEvent, payload.ref_type: ${event.createType}`);
         }
+    } else if (event.type === 'ForkEvent') {
+        console.log(`Forked ${event.name}`);
+    } else {
+        console.log(event);
     }
 }
 
+// Creates objects and prints their content from activity data
+// Activity data is fetched with the getActivity function
 function handleEvents(activity) {
-    const events = [];
-
-    // Create eventObject from event
     // TODO List events by month and year
-    // ? Should I combine this so that I handle the events one by one instead of making a list?
     for (const event of activity) {
+        // Create eventObject
         const eventObject = createEventObject(event);
 
-        events.push({ ...eventObject });
+        // Print the event
+        printEvent(eventObject);
     }
 
-    // Log events into terminal
-    printEvents(events);
 }
 
 module.exports = {
     getActivity,
     createEventObject,
-    printEvents,
+    printEvent,
     handleEvents
 };

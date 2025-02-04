@@ -4,6 +4,7 @@
 const { getActivity, handleEvents } = require("./events");
 
 async function main() {
+    // Checks that the argument for the username exists
     if (process.argv.length < 3) {
         console.error('Too few arguments.');
         return;
@@ -26,6 +27,7 @@ async function main() {
     // Log the first event
     // console.log(activity[19]);
 
+    // Handles the parsing and printing of the activity data
     handleEvents(activity);
 }
 
