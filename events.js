@@ -23,6 +23,7 @@ async function getActivity(username) {
     }
 }
 
+// TODO Create event class and use it to parse needed data into an object
 // Create EventObjects from the fetched data
 function createEventObject(event) {
     const eventObject = {};
@@ -63,6 +64,7 @@ function printEvent(event) {
     }
 }
 
+// Get the month the from the event timestamp
 function parseMonth(event) {
     const date = new Date(event.created_at);
     const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
@@ -99,5 +101,6 @@ module.exports = {
     getActivity,
     createEventObject,
     printEvent,
-    handleEvents
+    parseMonth,
+    handleEvents,
 };;
