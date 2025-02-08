@@ -1,7 +1,10 @@
-// @ts-check
-
 const { app, BrowserWindow } = require('electron');
-const path = require('node:path');
+const path = require('path');
+const electronReload = require('electron-reload');
+
+electronReload(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+});
 
 const createWindow = () => {
     const win = new BrowserWindow({
