@@ -1,5 +1,9 @@
+//@ts-check
+
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+
+/** @type {any} */
 const electronReload = require('electron-reload');
 
 electronReload(__dirname, {
