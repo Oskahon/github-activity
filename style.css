@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(97, 75, 158);
+    background-color: rgb(57, 39, 107);
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -7,16 +7,23 @@ body {
 h1 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-weight: 200;
+    color: rgb(180, 145, 214);
 }
 
 #main {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
+    max-width: 80%;
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: rgb(114, 97, 163);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 #divider {
-    width: 80%;
+    width: 90%;
     border: 2px solid black;
     margin: 0 auto;
     margin-top: 1rem;
