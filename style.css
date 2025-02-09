@@ -1,7 +1,7 @@
 body {
     background-color: rgb(57, 39, 107);
     text-align: center;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -10,12 +10,24 @@ h1 {
     color: rgb(180, 145, 214);
 }
 
+h2 {
+    margin: 0;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#user-text {
+    font-size: 1.3rem;
+    font-weight: 900;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+}
+
 #main {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     max-width: 80%;
-    border: 1px solid black;
     border-radius: 1rem;
     background-color: rgb(114, 97, 163);
     padding-top: 1rem;
@@ -24,8 +36,26 @@ h1 {
 
 #divider {
     width: 90%;
-    border: 2px solid black;
+    border: 2px solid rgb(32, 28, 43);
+    margin: 1rem auto;
+}
+
+#small-divider {
+    width: 45%;
+    border: 1px solid rgb(32, 28, 43);
     margin: 0 auto;
     margin-top: 1rem;
-    margin-bottom: 1rem;
+}
+
+#activity-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem;
+}
+
+li {
+    list-style-type: none;
+    margin-left: -2rem;
+    font-size: 1.1rem;
+    padding-top: 0.2rem;
 }
