@@ -6,10 +6,12 @@ const path = require('path');
 /** @type {any} */
 const electronReload = require('electron-reload');
 
+// Reloads the app when files are updated
 electronReload(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });
 
+// Creates the app window and opens index.html
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 600,
@@ -20,8 +22,12 @@ const createWindow = () => {
     });
 
     win.loadFile('index.html');
+
+    // const content = win.webContents;
+    // console.log(content);
 };
 
+// Waits until the app is loaded before creating the window
 app.whenReady().then(() => {
     createWindow();
 
@@ -30,6 +36,7 @@ app.whenReady().then(() => {
     });
 });
 
+// closes the app when all windows are closed
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
