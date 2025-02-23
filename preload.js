@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('myAPI', {
     },
     fetchActivity: (username) => {
         // TODO replace this with functionality from events.js
-        console.log(`TODO: Actually use the username: ${username}`);
+        console.log(`TODO: Actually use the username: ${username} when fetching`);
 
         const tempListOfActivity = [
             "In March:",
@@ -21,5 +21,5 @@ contextBridge.exposeInMainWorld('myAPI', {
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-
+    document.getElementById('username-input').focus();
 });

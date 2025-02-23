@@ -1,6 +1,17 @@
 // Javascript file called from index.html
 
-console.log('hello electron');
+const input = document.getElementById('username-form');
+input.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const usernameInput = document.getElementById('username-input');
+    const username = usernameInput.value;
+
+    console.log(username);
+    document.getElementById('user-text').innerText = `Usage for ${username}`;
+
+    usernameInput.value = "";
+});
 
 window.myAPI.hello();
 
