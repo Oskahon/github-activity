@@ -1,7 +1,7 @@
 // CLI tool for getting public github activity data of a given user
 // @ts-check
 
-const { getActivity, handleEvents } = require("./events");
+const { getActivity, handleEvents, mapActivity } = require("./events");
 
 async function main() {
     // Checks that the argument for the username exists
@@ -30,6 +30,7 @@ async function main() {
 
     // Handles the parsing and printing of the activity data
     handleEvents(activity);
+
 }
 
 main();

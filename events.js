@@ -109,7 +109,7 @@ function handleEvents(activity) {
         const eventObject = createEventObject(event);
 
         // Print the event
-        console.log(parseEventToString(eventObject));
+        console.log('\t' + parseEventToString(eventObject));
     }
 
     console.log();
@@ -122,7 +122,7 @@ function handleEvents(activity) {
  * @returns {String} Event data in a string format
  */
 function parseEventToString(event) {
-    let eventString = '\t';
+    let eventString = '';
 
     switch (event.type) {
         case 'PushEvent':
@@ -152,11 +152,37 @@ function parseEventToString(event) {
     return eventString;
 }
 
+/**
+ * Parse activity into a map that contains months as keys with an array of the event strings
+ * @param {Array.<Object>} activity Array containing the event objects fetched from GitHub
+ * @returns {Map.<string, string[]>} Returns the event strings mapped per month
+ */
+function mapActivity(activity) {
+    const activityMap = new Map();
+
+    for (const event of activity) {
+        const month = parseMonth(event);
+
+        if (!activityMap.has(month)) {
+            activityMap.set(month, []);
+        }
+
+        const eventObject = createEventObject(event);
+
+        const eventString = parseEventToString(eventObject);
+
+        activityMap.get(month).push(eventString);
+    }
+
+    return activityMap;
+}
+
 module.exports = {
     getActivity,
     createEventObject,
     printEvent,
     parseMonth,
     handleEvents,
-    parseEventToString
+    parseEventToString,
+    mapActivity
 };
