@@ -15,7 +15,7 @@ input.addEventListener('submit', (event) => {
 
 window.myAPI.hello();
 
-const activityList = window.myAPI.fetchActivity('Oskahon');
+const activityList = window.myAPI.fetchHardCodedActivity('Oskahon');
 
 console.log(activityList);
 

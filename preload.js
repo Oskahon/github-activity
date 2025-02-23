@@ -4,7 +4,7 @@ contextBridge.exposeInMainWorld('myAPI', {
     hello: () => {
         console.log('Hello from the back!');
     },
-    fetchActivity: (username) => {
+    fetchHardCodedActivity: (username) => {
         // TODO replace this with functionality from events.js
         console.log(`TODO: Actually use the username: ${username} when fetching`);
 
