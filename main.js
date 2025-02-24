@@ -1,10 +1,11 @@
 //@ts-check
 
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
 /** @type {any} */
 const electronReload = require('electron-reload');
+const { getActivity, mapActivity } = require('./events');
 
 // Reloads the app when files are updated
 electronReload(__dirname, {
@@ -17,7 +18,8 @@ const createWindow = () => {
         width: 600,
         height: 800,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            sandbox: false,
         }
     });
 
@@ -39,4 +41,13 @@ app.whenReady().then(() => {
 // closes the app when all windows are closed
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
+});
+
+// Listen for requests from the render process
+ipcMain.handle('get-activity', async (event, username) => {
+    return await getActivity(username);
+});
+
+ipcMain.handle('map-activity', (event, activity) => {
+    return mapActivity(activity);
 });

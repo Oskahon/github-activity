@@ -1,16 +1,17 @@
-const { contextBridge } = require('electron');
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('myAPI', {
-    hello: () => {
-        console.log('Hello from the back!');
-    },
     fetchHardCodedActivity: (username) => {
-        // TODO replace this with functionality from events.js
-        console.log(`TODO: Actually use the username: ${username} when fetching`);
-
+        console.log('Using hardcoded data');
         const tempListOfActivity = createHardCodedData();
 
         return tempListOfActivity;
+    },
+    getActivity: async (username) => {
+        return await ipcRenderer.invoke('get-activity', username);
+    },
+    mapActivity: async (activity) => {
+        return await ipcRenderer.invoke('map-activity', activity);
     }
 });
 
