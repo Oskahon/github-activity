@@ -8,13 +8,7 @@ contextBridge.exposeInMainWorld('myAPI', {
         // TODO replace this with functionality from events.js
         console.log(`TODO: Actually use the username: ${username} when fetching`);
 
-        const tempListOfActivity = [
-            "In March:",
-            "Pushed 2 commits to Oskahon/github-activity",
-            "Pushed 3 commits to Oskahon/github-activity",
-            "Pushed 1 commit to Oskahon/github-activity",
-            "Created Oskahon/github-activity"
-        ];
+        const tempListOfActivity = createHardCodedData();
 
         return tempListOfActivity;
     }
@@ -23,3 +17,16 @@ contextBridge.exposeInMainWorld('myAPI', {
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('username-input').focus();
 });
+
+
+function createHardCodedData() {
+    const map = new Map();
+
+    map.set('March', []);
+    map.get('March').push('Pushed 2 commits to Oskahon/github-activity');
+    map.get('March').push('Pushed 3 commits to Oskahon/github-activity');
+    map.get('March').push('Pushed 1 commit to Oskahon/github-activity');
+    map.get('March').push('Created Oskahon/github-activity');
+
+    return map;
+}
