@@ -28,5 +28,10 @@ function createHardCodedData() {
     map.get('March').push('Pushed 1 commit to Oskahon/github-activity');
     map.get('March').push('Created Oskahon/github-activity');
 
+    map.set('February', []);
+    map.get('February').push('Pushed 10 commits to Oskahon/reverser');
+    map.get('February').push('Created Oskahon/reverser');
+    map.get('February').push('Pushed 1 commit to Oskahon/linux_settings');
+
     return map;
 }

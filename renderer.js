@@ -11,30 +11,34 @@ input.addEventListener('submit', (event) => {
     document.getElementById('user-text').innerText = `Usage for ${username}`;
 
     usernameInput.value = "";
+
+    clearActivity();
+    setActivity('Oskahon');
+
 });
 
-window.myAPI.hello();
+function setActivity(username) {
+    const activityData = window.myAPI.fetchHardCodedActivity(username);
 
-const activityList = window.myAPI.fetchHardCodedActivity('Oskahon');
+    const activityList = document.getElementById('activity-list');
 
+    for (const [month, events] of activityData.entries()) {
+        const monthHeader = document.createElement('h2');
+        monthHeader.innerText = month;
 
-// TODO This needs to be refactored not to use hardcoded map key
-console.log(activityList);
+        const eventList = document.createElement('ul');
 
-const activity_list = document.getElementById('activity-list');
+        for (const event of events) {
+            const eventItem = document.createElement('li');
+            eventItem.innerText = event;
+            eventList.append(eventItem);
+        }
 
-const list = document.createElement('ul');
-
-const month = document.createElement('h2');
-month.innerText = activityList.keys().toArray()[0];
-activity_list.append(month);
-
-const events = activityList.get('March');
-for (const event of events) {
-    const list_item = document.createElement('li');
-    list_item.innerText = event;
-
-    list.append(list_item);
+        activityList.append(monthHeader);
+        activityList.append(eventList);
+    }
 }
 
-activity_list.append(list);
+function clearActivity() {
+    document.getElementById('activity-list').innerHTML = "";
+}
