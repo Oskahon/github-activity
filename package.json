@@ -8,7 +8,7 @@
   },
   "author": "Oskahon",
   "license": "MIT",
-  "description": "",
+  "description": "Electron app for fetching Github activity",
   "dependencies": {
     "@types/node": "^22.10.2"
   },

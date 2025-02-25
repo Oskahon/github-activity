@@ -12,6 +12,11 @@ input.addEventListener('submit', (event) => {
 
     document.getElementById('user-text').innerText = `Usage for ${username}`;
 
+    const largeDivider = document.getElementById('divider');
+    largeDivider.style.display = "block";
+    const smallDivider = document.getElementById('small-divider');
+    smallDivider.style.display = "block";
+
     usernameInput.value = "";
 
     clearActivity();

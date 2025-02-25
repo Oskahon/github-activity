@@ -31,13 +31,14 @@ h2 {
     border-radius: 1rem;
     background-color: rgb(114, 97, 163);
     padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 #divider {
     width: 90%;
     border: 2px solid rgb(32, 28, 43);
     margin: 1rem auto;
+    display: none;
 }
 
 #small-divider {
@@ -45,6 +46,7 @@ h2 {
     border: 1px solid rgb(32, 28, 43);
     margin: 0 auto;
     margin-top: 1rem;
+    display: none;
 }
 
 #activity-list {
@@ -58,4 +60,13 @@ li {
     margin-left: -2rem;
     font-size: 1.1rem;
     padding-top: 0.2rem;
+}
+
+input {
+    height: 2rem;
+    width: 70%;
+    border-radius: 1rem;
+    border: none;
+    text-align: center;
+    font-size: 1.3rem;
 }
