@@ -15,7 +15,7 @@ input.addEventListener('submit', (event) => {
     usernameInput.value = "";
 
     clearActivity();
-    setActivity('Oskahon');
+    setActivity(username);
 
 });
 
