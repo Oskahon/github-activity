@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-contextBridge.exposeInMainWorld('myAPI', {
+contextBridge.exposeInMainWorld('activity', {
     fetchHardCodedActivity: (username) => {
         console.log('Using hardcoded data');
         const tempListOfActivity = createHardCodedData();

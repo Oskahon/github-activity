@@ -28,10 +28,10 @@ async function setActivity(username) {
     try {
         let activityMap;
         if (HARDCODED_DATA) {
-            activityMap = window.myAPI.fetchHardCodedActivity(username);
+            activityMap = window.activity.fetchHardCodedActivity(username);
         } else {
-            const activity = await window.myAPI.getActivity(username);
-            activityMap = await window.myAPI.mapActivity(activity);
+            const activity = await window.activity.getActivity(username);
+            activityMap = await window.activity.mapActivity(activity);
         }
         console.log(activityMap);
 
