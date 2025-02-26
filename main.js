@@ -15,7 +15,7 @@ electronReload(__dirname, {
 // Creates the app window and opens index.html
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 600,
+        width: 700,
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
