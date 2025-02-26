@@ -145,7 +145,7 @@ function parseEventToString(event) {
             break;
 
         default:
-            eventString += `${event}`;
+            eventString += `${event.name} - ${event.type}`;
             break;
     }
 
