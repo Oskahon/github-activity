@@ -38,9 +38,11 @@ function createEventObject(event) {
 
     eventObject.name = event.repo.name;
     eventObject.type = event.type;
+    eventObject.createdAt = new Date(event.created_at);
+
 
     if (event.type === 'PushEvent') {
-        eventObject.commits = event.payload.size;
+        eventObject.commits = Number(event.payload.size);
     }
     if (event.type === 'CreateEvent') {
         eventObject.createType = event.payload.ref_type;
@@ -81,8 +83,7 @@ function printEvent(event) {
  * @returns {String} The month when the event happened as a string
  */
 function parseMonth(event) {
-    const date = new Date(event.created_at);
-    const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(date);
+    const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(event.createdAt);
 
     return monthName;
 }
@@ -94,8 +95,9 @@ function parseMonth(event) {
  */
 function handleEvents(activity) {
     let month = "";
+    const events = aggregatePushEvents(createEventObjects(activity));
 
-    for (const event of activity) {
+    for (const event of events) {
         // Get the month an print it if it's a new one
         const eventMonth = parseMonth(event);
         if (month !== eventMonth) {
@@ -105,11 +107,8 @@ function handleEvents(activity) {
             console.log(`In ${month}: `);
         }
 
-        // Create eventObject
-        const eventObject = createEventObject(event);
-
         // Print the event
-        console.log('\t' + parseEventToString(eventObject));
+        console.log('\t' + parseEventToString(event));
     }
 
     console.log();
@@ -159,22 +158,66 @@ function parseEventToString(event) {
  */
 function mapActivity(activity) {
     const activityMap = new Map();
+    let events = createEventObjects(activity);
+    events = aggregatePushEvents(events);
 
-    for (const event of activity) {
+    for (const event of events) {
         const month = parseMonth(event);
 
         if (!activityMap.has(month)) {
             activityMap.set(month, []);
         }
 
-        const eventObject = createEventObject(event);
-
-        const eventString = parseEventToString(eventObject);
+        const eventString = parseEventToString(event);
 
         activityMap.get(month).push(eventString);
     }
 
     return activityMap;
+}
+
+/**
+ * Parses the activity data from github api to eventObjects
+ * @param {Array.<Object>} activity Activity data from github
+ * @returns {Array.<Object>} Activity data parsed into eventObjects
+ */
+function createEventObjects(activity) {
+    const events = activity.map(event => createEventObject(event));
+    return events;
+}
+
+/**
+ * Aggregates consecutive push events that target the same repository
+ * @param {Array.<Object>} events Array containing eventObjects
+ * @returns {Array.<Object>} Array containing eventObjects after aggregating pushEvents
+ */
+function aggregatePushEvents(events) {
+    const aggregatedEvents = [];
+
+    for (let i = 0; i < events.length; i++) {
+        if (events[i].type !== 'PushEvent') {
+            aggregatedEvents.push(events[i]);
+            continue;
+        }
+
+        let sumOfCommits = events[i].commits;
+        const eventMonth = parseMonth(events[i]);
+
+        for (let j = i + 1; j < events.length; j++) {
+            const nextEventMonth = parseMonth(events[j]);
+            if (events[i].name !== events[j].name || events[j].type !== 'PushEvent' || eventMonth !== nextEventMonth) {
+                break;
+            }
+
+            i = j;
+            sumOfCommits += events[j].commits;
+        }
+
+        events[i].commits = sumOfCommits;
+        aggregatedEvents.push(events[i]);
+
+    }
+    return aggregatedEvents;
 }
 
 module.exports = {
