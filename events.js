@@ -48,6 +48,18 @@ function createEventObject(event) {
         eventObject.createType = event.payload.ref_type;
         eventObject.branch = event.payload.ref;
     }
+    if (event.type === 'DeleteEvent') {
+        eventObject.deleteType = event.payload.ref_type;
+        eventObject.branch = event.payload.ref;
+    }
+    if (event.type === 'IssuesEvent') {
+        eventObject.issueAction = event.payload.action;
+        // eventObject.issueTitle = event.payload.issue.title;
+    }
+    if (event.type === 'PullRequestEvent') {
+        eventObject.pullRequestAction = event.payload.action;
+        eventObject.merged = event.payload.pull_request.merged;
+    }
 
     return eventObject;
 }
@@ -141,6 +153,26 @@ function parseEventToString(event) {
             break;
         case 'ForkEvent':
             eventString += `Forked ${event.name}`;
+            break;
+        case 'DeleteEvent':
+            if (event.deleteType === 'branch') {
+                eventString += `Deleted branch '${event.branch}' at ${event.name}`;
+            } else {
+                eventString += `DeleteEvent, payload.ref_type: ${event.createType}`;
+            }
+            break;
+        case 'IssuesEvent':
+            const action = event.issueAction[0].toUpperCase() + event.issueAction.slice(1);
+            eventString += `${action} an issue at ${event.name}`;
+            break;
+        case 'PullRequestEvent':
+            if (event.pullRequestAction === 'closed' && event.merged) {
+                eventString += `Merged a pull request at ${event.name}`;
+            } else if (event.pullRequestAction === 'opened') {
+                eventString += `Opened a pull request at ${event.name}`;
+            } else {
+                eventString += `PullRequestEvent, action: ${event.pullRequestAction}`;
+            }
             break;
 
         default:
